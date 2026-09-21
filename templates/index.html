@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personal Finance Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <h2>FinanceTrack</h2>
+
+            <nav>
+                <a href="/" class="active">Dashboard</a>
+                <a href="/transactions">Transactions</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+                <a href="{{ url_for('settings') }}">Settings</a>
+                
+            </nav>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Profile Dropdown -->
+<div class="profile-wrapper">
+
+    <div class="profile-card" onclick="toggleProfileMenu()">
+
+        <div class="profile-avatar" id="profileAvatar">R</div>
+
+        <div class="profile-info">
+            <h3 id="dashboardName">Welcome, Rashi Bhawsar!</h3>
+            <p id="dashboardEmail">rashibhawsar.25@gmail.com</p>
+        </div>
+
+        <span class="profile-arrow">⌄</span>
+
+    </div>
+
+    <div class="profile-menu" id="profileMenu">
+        <a href="{{ url_for('settings') }}">Profile</a>
+        <a href="{{ url_for('settings') }}">Settings</a>
+        <button onclick="logoutMessage()">Logout</button>
+    </div>
+
+</div>
+            <!-- Header -->
+            <header>
+
+                <h1>Personal Finance Dashboard</h1>
+
+                <p>Track your income, expenses, and savings.</p>
+
+                <a href="/add" class="add-button">
+                    + Add Transaction
+                </a>
+
+            </header>
+
+
+            <!-- Summary Cards -->
+            <section class="cards">
+
+                <!-- Income -->
+                <div class="card income">
+
+                    <h3>Total Income</h3>
+
+                    <p>
+                        ₹{{ "%.2f"|format(total_income) }}
+                    </p>
+
+                </div>
+
+
+                <!-- Expenses -->
+                <div class="card expense">
+
+                    <h3>Total Expenses</h3>
+
+                    <p>
+                        ₹{{ "%.2f"|format(total_expenses) }}
+                    </p>
+
+                </div>
+
+
+                <!-- Savings -->
+                <div class="card savings">
+
+                    <h3>Total Savings</h3>
+
+                    <p>
+                        ₹{{ "%.2f"|format(total_savings) }}
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- Recent Transactions -->
+            <section class="recent-transactions">
+
+                <h2>Recent Transactions</h2>
+
+
+                {% if transactions %}
+
+                    {% for transaction in transactions[-5:]|reverse %}
+
+                        <div class="transaction">
+
+                            <div>
+                                <strong>{{ transaction.category }}</strong>
+
+                                {% if transaction.description %}
+                                    <small>
+                                        {{ transaction.description }}
+                                    </small>
+                                {% endif %}
+                            </div>
+
+
+                            {% if transaction.type == "income" %}
+
+                                <span class="income-text">
+                                    +₹{{ "%.2f"|format(transaction.amount) }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="expense-text">
+                                    -₹{{ "%.2f"|format(transaction.amount) }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p class="no-transactions">
+                        No transactions yet.
+                    </p>
+
+                {% endif %}
+
+            </section>
+
+        </main>
+
+    </div>
+<script>
+    const savedName = localStorage.getItem("name");
+    const savedEmail = localStorage.getItem("email");
+
+    if (savedName) {
+        document.getElementById("dashboardName").innerText =
+            "Welcome, " + savedName + "!";
+        
+        document.getElementById("profileAvatar").innerText =
+            savedName.charAt(0).toUpperCase();
+    }
+
+    if (savedEmail) {
+        document.getElementById("dashboardEmail").innerText =
+            savedEmail;
+    }
+    function toggleProfileMenu() {
+    const menu = document.getElementById("profileMenu");
+    menu.classList.toggle("show");
+}
+
+function logoutMessage() {
+    alert("Logout feature login system ke saath add hoga.");
+}
+
+document.addEventListener("click", function(event) {
+    const wrapper = document.querySelector(".profile-wrapper");
+
+    if (wrapper && !wrapper.contains(event.target)) {
+        document.getElementById("profileMenu").classList.remove("show");
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - FinanceTrack</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <h2>FinanceTrack</h2>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Dashboard</a>
+
+        <a href="{{ url_for('transactions') }}">Transactions</a>
+
+        <a href="{{ url_for('reports') }}">Reports</a>
+
+        <a href="{{ url_for('settings') }}">Settings</a>
+    </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header>
+                <h1>Financial Reports</h1>
+                <p>View your income, expenses and savings.</p>
+            </header>
+
+            <section class="summary-cards">
+
+                <div class="card">
+                    <h3>Total Income</h3>
+                    <h2 class="income-text">
+                        ₹{{ "%.2f"|format(total_income) }}
+                    </h2>
+                </div>
+
+                <div class="card">
+                    <h3>Total Expenses</h3>
+                    <h2 class="expense-text">
+                        ₹{{ "%.2f"|format(total_expenses) }}
+                    </h2>
+                </div>
+
+                <div class="card">
+                    <h3>Total Savings</h3>
+                    <h2>
+                        ₹{{ "%.2f"|format(total_savings) }}
+                    </h2>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

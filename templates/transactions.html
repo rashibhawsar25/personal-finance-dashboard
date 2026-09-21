@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transactions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+            <h2>FinanceTrack</h2>
+
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/transactions" class="active">Transactions</a>
+                <a href="{{ url_for('reports') }}">Reports</a>
+                
+                <a href="{{ url_for('settings') }}">Settings</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <header>
+                <h1>All Transactions</h1>
+                <p>View your income and expenses.</p>
+            </header>
+
+            <section class="recent-transactions">
+
+                {% for transaction in transactions %}
+
+                <div class="transaction">
+
+    <span>
+        <strong>{{ transaction.category }}</strong>
+        {{ transaction.description }}
+    </span>
+
+    <span>
+        {% if transaction.type == "income" %}
+            <span class="income-text">
+                +₹{{ "%.2f"|format(transaction.amount) }}
+            </span>
+        {% else %}
+            <span class="expense-text">
+                -₹{{ "%.2f"|format(transaction.amount) }}
+            </span>
+        {% endif %}
+    </span>
+
+    <span class="transaction-actions">
+        <a href="{{ url_for('edit_transaction', id=transaction.id) }}">Edit</a>
+
+        <form action="{{ url_for('delete_transaction', id=transaction.id) }}" method="POST">
+            <button type="submit">Delete</button>
+        </form>
+    </span>
+
+</div>
+
+                {% else %}
+
+                <p>No transactions yet.</p>
+
+                {% endfor %}
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

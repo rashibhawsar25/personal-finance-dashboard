@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - FinanceTrack</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>FinanceTrack</h2>
+
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/transactions">Transactions</a>
+            <a href="{{ url_for('reports') }}">Reports</a>
+            <a href="{{ url_for('settings') }}" class="active">Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+
+        <h1>Settings</h1>
+        <p>Manage your FinanceTrack preferences.</p>
+
+        <section class="settings-card">
+
+            <h2>Profile Settings</h2>
+
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+
+            <button onclick="saveProfile()">Save Profile</button>
+
+        </section>
+
+        <section class="settings-card">
+
+            <h2>Currency</h2>
+
+            <label for="currency">Select Currency</label>
+
+            <select id="currency">
+                <option value="₹">Indian Rupee (₹)</option>
+                <option value="$">US Dollar ($)</option>
+                <option value="€">Euro (€)</option>
+                <option value="£">British Pound (£)</option>
+            </select>
+
+            <button onclick="saveCurrency()">Save Currency</button>
+
+        </section>
+
+        <section class="settings-card">
+
+            <h2>Appearance</h2>
+
+            <button onclick="toggleTheme()">Change Theme</button>
+
+        </section>
+
+        <section class="settings-card">
+        <h2>Account</h2>
+
+         <p>Account management options will be available in future updates.</p>
+        </section>
+
+    </main>
+
+    <script>
+        function saveProfile() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+
+            localStorage.setItem("name", name);
+            localStorage.setItem("email", email);
+
+            alert("Profile saved successfully!");
+        }
+
+        function saveCurrency() {
+            const currency = document.getElementById("currency").value;
+
+            localStorage.setItem("currency", currency);
+
+            alert("Currency saved successfully!");
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        document.getElementById("name").value =
+            localStorage.getItem("name") || "";
+
+        document.getElementById("email").value =
+            localStorage.getItem("email") || "";
+
+        document.getElementById("currency").value =
+            localStorage.getItem("currency") || "₹";
+    </script>
+
+</body>
+</html>
